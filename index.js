@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const NestConnection = require('./lib/nest-connection');
 
-let ThermostatAccessory, HomeAwayAccessory, TempSensorAccessory, ProtectAccessory, LockAccessory;
+let ThermostatAccessory, HomeAwayAccessory, TempSensorAccessory, ProtectAccessory, LockAccessory, DetectAccessory;
 
 require('promise.prototype.finally').shim(Promise);
 
@@ -69,6 +69,7 @@ class NestPlatform {
                 loadDevices(TempSensorAccessory);
                 loadDevices(ProtectAccessory);
                 loadDevices(LockAccessory);
+                loadDevices(DetectAccessory);
 
                 return foundAccessories;
             }.bind(this);
@@ -109,6 +110,7 @@ class NestPlatform {
                         thermostat_count: accessoriesMounted.filter(el => el == 'NestThermostatAccessory').length,
                         tempsensor_count: accessoriesMounted.filter(el => el == 'NestTempSensorAccessory').length,
                         protect_count: accessoriesMounted.filter(el => el == 'NestProtectAccessory').length,
+                        detect_count: accessoriesMounted.filter(el => el == 'NestDetectAccessory').length,
                         lock_count: accessoriesMounted.filter(el => el == 'NestLockAccessory').length
                     }).catch(() => { });
                 }
@@ -170,6 +172,8 @@ module.exports = function(homebridge) {
     TempSensorAccessory = require('./lib/nest-tempsensor-accessory')(); // eslint-disable-line global-require
     ProtectAccessory = require('./lib/nest-protect-accessory')(); // eslint-disable-line global-require
     LockAccessory = require('./lib/nest-lock-accessory')(); // eslint-disable-line global-require
+    DetectAccessory = require('./lib/nest-detect-accessory')(); // eslint-disable-line global-require
+
 
     homebridge.registerPlatform('homebridge-nest', 'Nest', NestPlatform);
 };
